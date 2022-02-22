@@ -23,6 +23,6 @@ int main()
 int arr[10];
 	for(int i=0; i<10; i++) ///sorted array loop
 		arr[i]=i+1;
-	cout<<binary(arr,1,10);
+	std::cout<<binary(arr,1,10);
 	return 0;
 }
