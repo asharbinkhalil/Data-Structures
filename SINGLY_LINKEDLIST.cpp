@@ -37,8 +37,9 @@ public:
 
 class linkedlist
 {
-	node* head;
 public:
+	node* head;
+
 	linkedlist()
 	{
 		head = NULL;
@@ -95,7 +96,7 @@ public:
 		p = head;
 		node* c;
 		c = head->next;
-		for (int i = 1; i < loc-2; i++)
+		for (int i = 1; i < loc-1; i++)
 		{
 			p = c;
 			c = c->next;
@@ -114,17 +115,40 @@ public:
 		{
 			node* p;
 			p = head;
-			node* c;
+			node* c=head->next;
 			while (p->next != NULL && p->data != val)
 			{
-				p = p->next;
+				p = c;
+				c = c->next;
 			}
 			c = p->next;
 			temp->next = c;
 			p->next = temp;
 			temp = NULL;
 			delete temp;
-
+		}
+	}
+	void add_before_value(int val, int nval)
+	{
+		node* temp = new node;
+		temp->data = nval;
+		temp->next = NULL;
+		int count = 1;
+		if (head == NULL)
+			cout << "list is empty: ";
+		else
+		{
+			node* p;
+			p = head;
+			node* c = head->next;
+			while (p->next != NULL && p->data != val)
+			{
+				p = c;
+				c = c->next;
+				count++;
+			}
+			cout << "||||" << count<<"||||";
+			add_at_location(count, nval);
 		}
 	}
 
@@ -145,6 +169,14 @@ public:
 			cout << "\n";
 		}
 
+	}
+	void display_reverse(node * h)
+	{
+		if(h!=NULL)
+		{
+			display_reverse(h->next);
+			cout << h->data;
+		}
 	}
 	void delete_list()
 	{
@@ -197,6 +229,7 @@ public:
 			c = NULL;
 		}
 	}
+
 	void delete_a_location(int loc)
 	{
 		if (loc == 1)
@@ -223,21 +256,127 @@ public:
 			c = NULL;
 		}
 	}
+	int listlength()
+	{
+		node* p = head;
+		int c=0;
+		while (p != NULL)
+		{
+			c++;
+			p = p->next;
+		}
+		return c;
+	}
+	void removedupplcate()
+	{
+		node* p;
+		p = head;
+		node* s=NULL;
+	
+		while (p!=NULL)
+		{
+			s = p->next;
+			while (s != NULL)
+			{
+				if (p->data == s->data)
+					delete_a_value(p->data);
+				s = s->next;
+				
+			}
+			p = p->next;
+		}
+	}
+
+	node* getnode(int i)
+	{
+		int c = 0;
+		node* p = head;
+		while (p!=NULL)
+		{
+			if (c == i)
+			{
+				return p;
+			}
+			c++;
+			p = p->next;
+		}
+	}
+	void reverse_list()
+	{
+		/*int c=0;
+		c= listlength();
+		for (int i = 0; i <= c / 2; i++)
+		{
+			int* a = &(getnode(i)->data);
+			int* b = &(getnode(c - i)->data);
+			cout << a << "\t" << b << endl;
+			swap(a, b);
+		}*/
+		node* curr;
+		curr = head;
+		node* prev = NULL, * next = NULL;
+		while (curr!=NULL)
+		{
+			next = curr->next;
+			curr->next = prev;
+			prev = curr;
+			curr = next;
+		}
+		head = prev;
+
+
+	}
+	void swap(int*& a, int*& b)
+	{
+		int temp;
+		temp = *a;
+		*a = *b;
+		*b = temp;
+	}
+	void my_swap(node* node_1, node* node_2)
+	{
+		int temp = node_1->data;
+		node_1->data = node_2->data;
+		node_2->data = temp;
+	}
+
+	void bubble_sort()
+	{
+		int swapped;
+
+		node* lPtr; // left pointer will always point to the start of the list
+		node* rPrt = NULL; // right pointer will always point to the end of the list
+		do
+		{
+			swapped = 0;
+			lPtr = head;
+			while (lPtr->next != rPrt)
+			{
+				if (lPtr->data > lPtr->next->data)
+				{
+					my_swap(lPtr, lPtr->next);
+					swapped = 1;
+				}
+				lPtr = lPtr->next;
+			}
+			//as the largest element is at the end of the list, assign that to rPtr as there is no need to
+			//check already sorted list
+			rPrt = lPtr;
+
+		} while (swapped);
+	}
 };
 int main()
 {
 	linkedlist obj;
 	cout << "\n\n\n";
-	for(int i=6; i>=1; i--)
+	for(int i=0; i<6; i++)
 		obj.add_to_start(i);
-	cout << "INITIAL LIST HAS BEEN CREATED: \n";
-	obj.display();
-	
 
 	cout << "ELEMENT IS ADDED AT LAST : \n";
 	obj.add_to_end(9);
 	obj.display();
-	obj.add_at_location(2,2);
+	obj.add_at_location(2, 2);
 	cout << "ELEMENT 2 ADDED AT location 2  : \n";
 	obj.display();
 	cout << "ELEMENT 4 ADDED AFTER value 3  : \n";
@@ -255,5 +394,26 @@ int main()
 	cout << "LOCATION 3 DELETED MANUALY : \n";
 	obj.delete_a_location(3);
 	obj.display();
+	obj.display_reverse(obj.head);
+	cout << "INITIAL LIST HAS BEEN CREATED: \n";
+	obj.display();
+	//for (int i = 0; i < 6; i++)
+	//	obj.add_to_start(i);
+	//cout << "\nADDED MORE ITEMS IN LIST: \n";
+	//obj.display();
+	//cout << "\nREMOVED DUPLICATES ITEMS IN LIST: \n";
+	//obj.removedupplcate();
+	//obj.display();
+	cout << "\nSORTED THE LIST: \n";
+	obj.bubble_sort();
+	obj.display();
+	cout << "\REVERSED THE LIST: \n";
+	obj.reverse_list();
+	obj.display();
+	obj.display();
+
+
+
+
 	return 0;
-}
+} 
