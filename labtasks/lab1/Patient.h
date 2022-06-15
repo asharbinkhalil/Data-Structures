@@ -22,19 +22,15 @@ meditation rate *), while the other function accepts arguments for out-
 patient information. Both functions should return the total charges. Write
 your main function and test the functionality of your application.
 */
-#include "Patient.h"
-#include "Patient.cpp"
 #include<iostream>
-#include<String>
+#include "Hospital.h"
+
 using namespace std;
-class Hospital
+class Patient
 {
 public:
-	
-	Patient pobj;
-	int meditationCharges;
-	double dailyRate;
-	int hospitalCharges;
-	void getPatient();
+	string name;
+	string type;
+	int noOfDays;
 };
 
